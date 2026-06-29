@@ -138,9 +138,9 @@
      ============================================================ */
   const fwSpin = $('.fw-spin');
   if (fwSpin) {
-    const pts = '200,50 330,125 330,275 200,350 70,275 70,125';
+    const pts = '200,55 345,200 200,345 55,200';
     let poly = '';
-    for (let r = 0; r <= 60; r += 5) poly += `<polygon points="${pts}" transform="rotate(${r} 200 200)"/>`;
+    for (let r = 0; r <= 88; r += 4) poly += `<polygon points="${pts}" transform="rotate(${r} 200 200)"/>`;
     fwSpin.innerHTML = poly;
   }
 
@@ -465,6 +465,90 @@
       go(i + 1);
     });
     go(0);
+  });
+
+  /* ============================================================
+     WORK PAGE — Reels coverflow carousel
+     Centred reel is in focus & interactive; neighbours angle back in 3D.
+     Move with the bottom controls, arrow keys, swipe, or by tapping a side card.
+     ============================================================ */
+  $$('[data-reelcarousel]').forEach(car => {
+    const viewport = $('.reelviewport', car);
+    const rail     = $('.reelrail', car);
+    const cards    = $$('.reelcard', car);
+    const prevBtns = $$('[data-reel-prev]', car);
+    const nextBtns = $$('[data-reel-next]', car);
+    const brandEl  = $('[data-reel-brand]', car);
+    if (!viewport || !rail || cards.length === 0) return;
+
+    let idx = 0;
+    const last = cards.length - 1;
+
+    function layout() {
+      const vpW = viewport.clientWidth;
+      const active = cards[idx];
+      const center = active.offsetLeft + active.offsetWidth / 2;
+      rail.style.transform = `translateX(${Math.round(vpW / 2 - center)}px)`;
+
+      cards.forEach((c, i) => {
+        const off = i - idx;
+        const a = Math.abs(off);
+        let scale = 1, rot = 0, op = 1, tz = 0, px = 0;
+        if (a >= 1) {
+          scale = a === 1 ? 0.86 : 0.74;
+          op    = a === 1 ? 0.72 : 0.4;
+          rot   = (off < 0 ? 1 : -1) * (a === 1 ? 20 : 26);
+          tz    = -(a * 70);
+          px    = -off * (a === 1 ? 30 : 50);
+        }
+        if (reduceMotion) { rot = 0; tz = 0; px = 0; scale = a >= 1 ? 0.9 : 1; }
+        c.style.transform = `translateX(${px}px) translateZ(${tz}px) rotateY(${rot}deg) scale(${scale})`;
+        c.style.opacity = op;
+        c.style.zIndex = String(100 - a);
+        const isActive = off === 0;
+        c.toggleAttribute('data-active', isActive);
+        c.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        $$('a, button', c).forEach(el => { el.tabIndex = isActive ? 0 : -1; });
+      });
+
+      if (brandEl && active) {
+        const name = active.querySelector('.reelcard__name');
+        if (name) brandEl.textContent = name.textContent;
+      }
+      prevBtns.forEach(b => { b.disabled = idx === 0; });
+      nextBtns.forEach(b => { b.disabled = idx === last; });
+    }
+
+    function go(n) { idx = Math.max(0, Math.min(last, n)); layout(); }
+
+    prevBtns.forEach(b => b.addEventListener('click', () => go(idx - 1)));
+    nextBtns.forEach(b => b.addEventListener('click', () => go(idx + 1)));
+
+    // Tap a side card to bring it to the centre
+    cards.forEach((c, i) => {
+      c.addEventListener('click', (e) => {
+        if (i === idx) return;                 // active card: let the reel/CTA handle it
+        if (e.target.closest('a')) return;
+        go(i);
+      });
+    });
+
+    // Keyboard
+    car.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft')  { go(idx - 1); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { go(idx + 1); e.preventDefault(); }
+    });
+
+    // Swipe
+    let sx = 0, sdx = 0, swiping = false;
+    viewport.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sdx = 0; swiping = true; }, { passive: true });
+    viewport.addEventListener('touchmove',  (e) => { if (swiping) sdx = e.touches[0].clientX - sx; }, { passive: true });
+    viewport.addEventListener('touchend',   () => { if (Math.abs(sdx) > 40) go(idx + (sdx < 0 ? 1 : -1)); swiping = false; });
+
+    let rt;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 120); }, { passive: true });
+    window.addEventListener('load', layout);
+    layout();
   });
 
   /* ============================================================
