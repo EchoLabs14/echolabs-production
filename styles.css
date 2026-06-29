@@ -16,6 +16,11 @@
   --grad: linear-gradient(90deg,#FF4A24,#7B3DFF 55%,#3A2BE8);
   --grad-soft: linear-gradient(90deg, rgba(255,74,36,.14), rgba(123,61,255,.14) 55%, rgba(58,43,232,.14));
 
+  /* Opaque card surfaces — replaces frosted-glass rgba(255,255,255,.x) fills.
+     Warm off-white that sits a touch above --paper; reads as printed stock, not glass. */
+  --card:#FAF8F2;
+  --card-hover:#FFFFFF;
+
   --font-display:'Bricolage Grotesque', system-ui, sans-serif;
   --font-body:'Hanken Grotesk', system-ui, sans-serif;
   --font-mono:'JetBrains Mono', ui-monospace, monospace;
@@ -139,7 +144,7 @@ a, button, summary, [role="button"]{ -webkit-tap-highlight-color:rgba(123,61,255
 /* Mobile menu toggle */
 .nav__toggle{
   display:none; width:44px; height:44px; border:1px solid var(--border);
-  border-radius:50%; place-items:center; background:rgba(255,255,255,.4);
+  border-radius:50%; place-items:center; background:var(--card);
 }
 .nav__toggle span{ display:block; width:18px; height:2px; background:var(--ink); position:relative; transition:transform .3s var(--ease), opacity .2s; }
 .nav__toggle span::before, .nav__toggle span::after{ content:""; position:absolute; left:0; width:18px; height:2px; background:var(--ink); transition:transform .3s var(--ease); }
@@ -187,9 +192,14 @@ body.cursor-on .cursor{ opacity:1; }
 body.cursor-on, body.cursor-on *{ cursor:none !important; }
 
 /* ---------- SECTION SCAFFOLD ---------- */
-.section{ padding-block:clamp(64px,7.5vw,104px); position:relative; }
-.section--tight{ padding-block:clamp(52px,6vw,84px); }
-.section__head{ margin-bottom:clamp(40px,6vw,72px); }
+.section{ padding-block:clamp(44px,5vw,76px); position:relative; }
+.section--tight{ padding-block:clamp(38px,4.4vw,62px); }
+.section__head{ margin-bottom:clamp(22px,3.2vw,40px); }
+/* Alternating section bands so the homepage reads as distinct chapters, not one long scroll.
+   (The dark Work band, black metrics, and gradient CTA already break the rhythm; these tint the
+   in-between light sections so adjacent blocks never blur together.) */
+.belief, .flywheel-sec, .echoband{ background:#ECE6D9; border-block:1px solid var(--border); }
+.services-groups, .process{ background:var(--paper); }
 .section__eyebrow{ display:block; margin-bottom:22px; }
 .section__eyebrow b{ color:var(--ink); font-weight:500; }
 .section__title{ font-family:var(--font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.025em; line-height:.92; font-size:clamp(34px,5vw,68px); max-width:18ch; }
@@ -205,12 +215,18 @@ body.cursor-on, body.cursor-on *{ cursor:none !important; }
 
 /* ---------- HERO ---------- */
 .hero{ position:relative; padding-top:clamp(92px,12vh,126px); padding-bottom:clamp(16px,2.5vh,30px); overflow:hidden; }
-.hero__tag{ display:inline-flex; align-items:center; gap:10px; border:1px solid var(--border); background:rgba(255,255,255,.35); border-radius:var(--radius); padding:8px 16px 8px 14px; margin-bottom:clamp(14px,2vw,24px); }
+.hero__tag{ display:inline-flex; align-items:center; gap:10px; border:1px solid var(--border); background:var(--card); border-radius:var(--radius); padding:8px 16px 8px 14px; margin-bottom:clamp(14px,2vw,24px); }
 .hero__dot{ width:8px; height:8px; border-radius:50%; background:var(--coral); flex:none; position:relative; }
 .hero__dot::after{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--coral); animation:pulse 2s ease-out infinite; }
 @keyframes pulse{ 0%{ transform:scale(1); opacity:.7; } 100%{ transform:scale(3.4); opacity:0; } }
 .hero__tag .eyebrow{ color:var(--ink); }
-.hero h1{ font-family:var(--font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.03em; line-height:.9; font-size:clamp(40px,8.4vw,116px); }
+.hero h1{ font-family:var(--font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.03em; line-height:.9; font-size:clamp(38px,7.4vw,104px); }
+/* Desktop: hero fills one screen and the marquee ribbon is pinned to the bottom edge.
+   Marquee is absolutely positioned (not flex) so the hero content stays left-aligned. */
+@media (min-width:768px){
+  .hero{ min-height:100svh; padding-bottom:clamp(74px,10vh,108px); }
+  .hero .marquee{ position:absolute; left:0; right:0; bottom:0; margin-top:0; }
+}
 .line-mask{ overflow:hidden; display:block; padding-block:.02em; }
 .line-mask > span{ display:block; transform:translateY(112%); transition:transform 1.05s var(--ease); }
 body.loaded .line-mask > span{ transform:translateY(0); }
@@ -292,7 +308,7 @@ body.loaded .hero__cta{ opacity:1; transform:none; }
 .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:clamp(16px,2vw,24px); }
 .card{
   position:relative; border:1px solid var(--border); border-radius:20px;
-  padding:clamp(26px,3vw,38px); background:rgba(255,255,255,.35);
+  padding:clamp(26px,3vw,38px); background:var(--card);
   overflow:hidden; isolation:isolate;
   transition:transform .5s var(--ease), border-color .5s var(--ease);
 }
@@ -313,7 +329,7 @@ body.loaded .hero__cta{ opacity:1; transform:none; }
 .workgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:clamp(16px,2vw,22px); }
 .wcard{
   position:relative; border:1px solid var(--border); border-radius:20px; overflow:hidden;
-  background:rgba(255,255,255,.35); min-height:300px; display:flex; flex-direction:column;
+  background:var(--card); min-height:300px; display:flex; flex-direction:column;
   transition:transform .5s var(--ease), border-color .5s var(--ease);
 }
 .wcard:hover{ transform:translateY(-6px); border-color:var(--ink); }
@@ -327,16 +343,18 @@ body.loaded .hero__cta{ opacity:1; transform:none; }
 .wcard__stat span{ font-size:.5em; }
 
 /* ---------- DARK BANDS (creators / for-creators) ---------- */
-.darkband{ position:relative; overflow:hidden; background:var(--night); color:var(--paper); padding-block:clamp(46px,5.8vw,86px); }
+/* Static corner glows (matches the .workcta "designed panel" treatment) replace
+   the floating blurred orbs — same brand warmth, none of the AI-hero blob motion. */
+.darkband{ position:relative; overflow:hidden; color:var(--paper); padding-block:clamp(46px,5.8vw,86px);
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(255,74,36,.16), transparent 46%),
+    radial-gradient(130% 150% at 100% 100%, rgba(58,43,232,.22), rgba(123,61,255,.10) 40%, transparent 62%),
+    var(--night);
+}
 .darkband .section__eyebrow b{ color:#fff; }
 .darkband__inner{ position:relative; z-index:1; }
-.orb{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.55; z-index:0; pointer-events:none; will-change:transform; }
-.orb--1{ width:420px; height:420px; background:var(--coral); top:-80px; left:-60px; animation:float1 16s ease-in-out infinite; }
-.orb--2{ width:520px; height:520px; background:var(--violet); bottom:-160px; right:-80px; animation:float2 19s ease-in-out infinite; }
-.orb--3{ width:300px; height:300px; background:var(--indigo); top:40%; left:55%; animation:float3 22s ease-in-out infinite; opacity:.4; }
-@keyframes float1{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(40px,50px); } }
-@keyframes float2{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(-50px,-40px); } }
-@keyframes float3{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(30px,-30px) scale(1.12); } }
+/* Orbs retired in favour of the static .darkband corner glows above. */
+.orb{ display:none; }
 .darkband h2{ font-family:var(--font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.025em; line-height:.92; font-size:clamp(34px,4.6vw,58px); }
 .darkband__lead{ color:rgba(243,240,232,.66); font-size:clamp(15px,1.4vw,18px); line-height:1.55; max-width:42ch; }
 .split-head{ display:grid; grid-template-columns:1.2fr .8fr; gap:clamp(24px,3.4vw,48px); align-items:end; margin-bottom:clamp(24px,3.4vw,44px); }
@@ -376,8 +394,9 @@ body.loaded .hero__cta{ opacity:1; transform:none; }
 @media (max-width:600px){ .phero__meta{ gap:30px; } .phero__foot{ gap:24px; } }
 
 /* ---------- FINAL CTA ---------- */
-.final{ position:relative; overflow:hidden; color:#fff; background:linear-gradient(115deg,#FF4A24,#7B3DFF 50%,#3A2BE8,#7B3DFF 80%,#FF4A24); background-size:280% 280%; animation:shift 14s ease infinite; text-align:center; padding-block:clamp(44px,5.5vw,82px); }
-@keyframes shift{ 0%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } 100%{ background-position:0% 50%; } }
+/* Static rich gradient — the auto-shifting background-position animation (the
+   "AI template" tell) is removed; the gradient itself stays as brand colour. */
+.final{ position:relative; overflow:hidden; color:#fff; background:linear-gradient(115deg,#FF4A24,#7B3DFF 52%,#3A2BE8); text-align:center; padding-block:clamp(44px,5.5vw,82px); }
 .final__eyebrow{ color:rgba(255,255,255,.8); margin-bottom:16px; display:block; }
 .final h2{ font-family:var(--font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.025em; line-height:.92; font-size:clamp(34px,5vw,76px); max-width:15ch; margin-inline:auto; }
 .final__sub{ margin-top:16px; font-size:clamp(15px,1.5vw,19px); color:rgba(255,255,255,.85); max-width:48ch; margin-inline:auto; }
@@ -400,7 +419,7 @@ body.loaded .hero__cta{ opacity:1; transform:none; }
 .field label .req{ color:var(--coral); }
 .field input, .field select, .field textarea{
   font-family:var(--font-body); font-size:16px; color:var(--ink);
-  background:rgba(255,255,255,.5); border:1px solid var(--border); border-radius:12px;
+  background:var(--card); border:1px solid var(--border); border-radius:12px;
   padding:14px 16px; transition:border-color .3s var(--ease), background .3s var(--ease);
   width:100%;
 }
@@ -449,7 +468,7 @@ body.loaded .hero__cta{ opacity:1; transform:none; }
 
 /* ---------- CONTACT ---------- */
 .contact-options{ display:grid; gap:14px; }
-.contact-opt{ display:flex; align-items:center; gap:16px; padding:20px 22px; border:1px solid var(--border); border-radius:16px; background:rgba(255,255,255,.35); transition:border-color .4s var(--ease), transform .4s var(--ease); }
+.contact-opt{ display:flex; align-items:center; gap:16px; padding:20px 22px; border:1px solid var(--border); border-radius:16px; background:var(--card); transition:border-color .4s var(--ease), transform .4s var(--ease); }
 .contact-opt:hover{ border-color:var(--ink); transform:translateX(4px); }
 .contact-opt__ico{ width:42px; height:42px; flex:none; border-radius:12px; display:grid; place-items:center; background:var(--grad); }
 .contact-opt__ico svg{ width:20px; stroke:#fff; }
@@ -624,7 +643,7 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 
 /* ---------- SERVICES GROUPS ---------- */
 /* Two services shown side by side, no scrolling */
-.svcgroups{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,3.4vw,52px); margin-top:clamp(30px,4vw,52px); align-items:start; }
+.svcgroups{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,3.4vw,52px); margin-top:clamp(30px,4vw,52px); align-items:stretch; }
 .services-groups .svcgroup{ border-top:1px solid var(--ink); padding-top:clamp(24px,2.8vw,36px); margin-top:0; display:flex; flex-direction:column; }
 .services-groups .svcgroup:first-of-type{ margin-top:0; }
 .svcgroups .svcsub{ margin-top:auto; }
@@ -674,7 +693,7 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 @media (max-width:760px){ .bigstats{ grid-template-columns:1fr; gap:42px; } }
 
 /* ---------- WORK CTA — highlighted dark band to break up the long light scroll ---------- */
-.workcta{ padding-block:clamp(16px,3vw,38px); }
+.workcta{ padding-block:clamp(8px,1.8vw,22px); }
 .workcta__inner{
   position:relative; overflow:hidden;
   display:flex; align-items:center; justify-content:space-between; gap:clamp(24px,4vw,48px); flex-wrap:wrap;
@@ -728,11 +747,7 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 .section__eyebrow, .phero__eyebrow{ display:flex; align-items:center; gap:14px; font-size:clamp(13px,1.5vw,16px); letter-spacing:.18em; margin-bottom:clamp(20px,2.4vw,28px); }
 .final__eyebrow{ display:inline-flex; align-items:center; gap:14px; font-size:clamp(13px,1.5vw,16px); letter-spacing:.18em; }
 .section__eyebrow b, .phero__eyebrow b, .final__eyebrow b{ font-weight:600; }
-.section__eyebrow::before, .phero__eyebrow::before, .final__eyebrow::before{
-  content:""; width:34px; height:3px; border-radius:3px; flex:none;
-  background:linear-gradient(90deg,#FF4A24,#7B3DFF,#3A2BE8,#7B3DFF,#FF4A24);
-  background-size:200% 100%; animation:gradFlow 6s linear infinite;
-}
+/* Eyebrow tick removed for a cleaner, more professional look (no leading dash) */
 
 /* --- Flowing gradient: gentle shimmer on highlight words/numbers --- */
 @keyframes gradFlow{ from{ background-position:0% 0; } to{ background-position:-200% 0; } }
@@ -789,6 +804,24 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 /* odd number of sub-items: let the last one span the full width so there's no empty cell */
 .svcgroups .svcsub__item:last-child:nth-child(odd){ grid-column:1 / -1; }
 @media (max-width:480px){ .svcgroups .svcsub{ grid-template-columns:1fr; } }
+
+/* ---- Compact services: both engines + all sub-items readable in one screen ---- */
+.services-groups{ padding-block:clamp(30px,3.8vw,56px); }
+.services-groups .section__title{ font-size:clamp(24px,3vw,40px); }
+.services-groups .section__head{ margin-bottom:clamp(14px,2vw,24px); }
+.services-groups__note{ margin-top:8px; font-size:clamp(13px,1.1vw,14.5px); }
+.svcgroups{ margin-top:clamp(14px,2vw,26px); gap:clamp(18px,2.2vw,34px); }
+.services-groups .svcgroup{ padding-top:clamp(12px,1.5vw,20px); }
+.svcgroups .svcgroup__head{ margin-bottom:clamp(10px,1.4vw,16px); gap:clamp(12px,1.4vw,20px); }
+.svcgroups .svcgroup__no{ font-size:clamp(30px,2.6vw,42px); }
+.svcgroups .svcgroup__title{ font-size:clamp(19px,1.9vw,26px); margin-bottom:7px; }
+.svcgroups .svcgroup__lead{ font-size:clamp(12.5px,1vw,14px); line-height:1.4; max-width:52ch; }
+.svcgroups .svcsub__item{ padding:9px 12px; }
+.svcgroups .svcsub__item h4{ font-size:13px; margin-bottom:3px; }
+.svcgroups .svcsub__item p{ font-size:11.5px; line-height:1.35; }
+/* Level the two engines: each sub-item grid fills its (equal-height) column and stretches its
+   rows, so both boxes line up top and bottom regardless of how the copy wraps */
+.svcgroups .svcsub{ margin-top:0; flex:1 1 auto; align-content:stretch; }
 @media (max-width:640px){
   .svcgroup__head{ grid-template-columns:1fr; gap:14px; }
   .svcgroup__index{ flex-flow:row wrap; align-items:baseline; gap:8px 12px; }
@@ -806,10 +839,10 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 }
 /* on-brand illustration: one idea -> infinite echoes */
 .belief__viz{ margin-top:clamp(12px,2vw,28px); }
-.belief__viz .diffviz{ width:100%; height:auto; display:block; }
+.belief__viz .diffviz{ width:100%; max-width:980px; height:auto; display:block; margin-inline:auto; }
 .belief__viz .dv-tag{ font-family:var(--font-mono); font-size:14px; letter-spacing:2.5px; fill:var(--muted); }
-.belief__viz .dv-hero{ font-family:var(--font-display); font-weight:800; font-size:34px; letter-spacing:-.01em; }
-.belief__viz .dv-hero2{ font-family:var(--font-display); font-weight:800; font-size:28px; letter-spacing:-.01em; }
+/* Both illustration labels share one size so the two sides read as a matched pair */
+.belief__viz .dv-hero, .belief__viz .dv-hero2{ font-family:var(--font-display); font-weight:800; font-size:32px; letter-spacing:-.01em; }
 @media (max-width:640px){
   .belief__viz{ margin-top:clamp(28px,7vw,40px); overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
   .belief__viz::-webkit-scrollbar{ display:none; }
@@ -817,18 +850,21 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 }
 
 /* ---------- CONTENT FLYWHEEL ---------- */
-.flywheel-sec{ overflow:hidden; padding-block:clamp(26px,3.2vw,46px); }
+/* Extra bottom room so the X node label isn't clipped; top room handled by the wheel's margin */
+.flywheel-sec{ overflow:hidden; padding-top:clamp(22px,3vw,42px); padding-bottom:clamp(52px,6.5vw,84px); }
 .flywheel-sec .section__head{ text-align:center; margin-bottom:0; }
 .flywheel-sec .section__eyebrow{ justify-content:center; }
-.flywheel-sec .section__title{ max-width:none; font-size:clamp(26px,3.2vw,40px); }
-.flywheel__lead{ margin:12px auto 0; max-width:46ch; color:var(--muted); font-size:clamp(14px,1.35vw,17px); line-height:1.55; }
-.flywheel{ position:relative; width:min(82vw,392px,44vh); aspect-ratio:1; margin:clamp(30px,4.2vw,54px) auto 0; }
+.flywheel-sec .section__title{ max-width:none; font-size:clamp(24px,2.8vw,36px); }
+.flywheel__lead{ margin:10px auto 0; max-width:44ch; color:var(--muted); font-size:clamp(13px,1.2vw,15.5px); line-height:1.5; }
+/* Smaller wheel; generous top margin keeps the Instagram label clear of the lead text,
+   bottom margin + section padding give the X node label room so nothing is cropped */
+.flywheel{ position:relative; width:min(62vw,260px,38vh); aspect-ratio:1; margin:clamp(48px,5.5vw,74px) auto clamp(30px,3.6vw,46px); }
 .fw-svg{ position:absolute; inset:15%; overflow:visible; }
 .fw-spin{ transform-origin:200px 200px; }
 @keyframes fwspin{ to{ transform:rotate(360deg); } }
 @media (prefers-reduced-motion:no-preference){ .fw-spin{ animation:fwspin 50s linear infinite; } }
-.flywheel__center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:35%; aspect-ratio:1; border-radius:50%; background:var(--paper); display:grid; place-content:center; text-align:center; z-index:2; }
-.flywheel__center span{ display:block; font-family:var(--font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.01em; line-height:1.04; font-size:clamp(12px,1.7vw,16px); }
+.flywheel__center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:40%; aspect-ratio:1; border-radius:50%; background:var(--paper); display:grid; place-content:center; text-align:center; padding:6%; z-index:2; }
+.flywheel__center span{ display:block; font-family:var(--font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.02em; line-height:1.02; font-size:clamp(10px,1.45vw,13px); }
 .flywheel__center span:last-child{ background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
 /* node is anchored by the ICON (label sits absolutely below) so all icons land on a true circle */
 .fw-node{ position:absolute; transform:translate(-50%,-50%); width:52px; height:52px; z-index:3; transition:transform .4s var(--ease); }
@@ -857,7 +893,15 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 
 /* ---------- WORK: real campaigns, disclaimer, personal branding ---------- */
 /* Work page lands straight on the campaigns; add hero-height top spacing under the fixed nav */
-.section.work-top{ padding-top:clamp(104px,13vh,140px); }
+.section.work-top{ padding-top:clamp(80px,10vh,112px); padding-bottom:clamp(24px,3vw,40px); }
+/* Page heading stays on one line */
+.work-top .section__title{ max-width:none; white-space:nowrap; font-size:clamp(26px,5.6vw,60px); }
+.work-top .work-subhead{ margin-top:clamp(16px,2.2vw,28px); }
+/* LinkedIn shown as its own distinct band; proof on paper after it */
+.work-li{ background:#ECE6D9; border-block:1px solid var(--border); }
+.work-li .work-subhead{ margin-top:0; }
+.work-proof{ background:var(--paper); }
+.work-proof .proofblock{ margin-top:0; padding-top:0; border-top:none; }
 .work-disclaimer{ margin-bottom:clamp(34px,4.5vw,52px); padding:16px 20px; border:1px dashed var(--border); border-radius:14px; color:var(--muted); font-size:clamp(12.5px,1.05vw,14px); line-height:1.6; max-width:94ch; }
 .work-disclaimer b{ color:var(--ink); font-weight:600; }
 /* Footer disclaimer: shown after the work, smaller — it's only a legal note */
@@ -903,7 +947,7 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 .li-badge{ display:inline-grid; place-items:center; width:22px; height:22px; border-radius:5px; background:#0A66C2; flex:none; }
 .li-badge svg{ width:14px; height:14px; }
 .casestudies{ display:flex; flex-direction:column; gap:clamp(16px,2vw,22px); }
-.cs-card{ display:flex; gap:clamp(20px,3vw,40px); background:rgba(255,255,255,.5); border:1px solid var(--border); border-radius:20px; padding:clamp(22px,3vw,32px); transition:border-color .35s var(--ease), box-shadow .35s var(--ease), transform .35s var(--ease); }
+.cs-card{ display:flex; gap:clamp(20px,3vw,40px); background:var(--card); border:1px solid var(--border); border-radius:20px; padding:clamp(22px,3vw,32px); transition:border-color .35s var(--ease), box-shadow .35s var(--ease), transform .35s var(--ease); }
 .cs-card:hover{ border-color:var(--ink); box-shadow:0 24px 60px -42px rgba(11,10,17,.5); transform:translateY(-3px); }
 .cs-main{ flex:1; min-width:0; }
 .cs-head{ display:flex; align-items:center; gap:11px; margin-bottom:16px; }
@@ -913,7 +957,7 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 .cs-why{ margin-top:16px; color:var(--muted); font-size:clamp(14px,1.3vw,16px); line-height:1.6; max-width:60ch; }
 .cs-side{ width:clamp(200px,22vw,240px); flex:none; display:flex; flex-direction:column; gap:14px; }
 .cs-metrics{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.cs-metric{ background:rgba(255,255,255,.6); border:1px solid var(--border); border-radius:12px; padding:13px 14px; }
+.cs-metric{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:13px 14px; }
 .cs-metric__label{ display:block; font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
 .cs-metric__num{ display:block; margin-top:6px; font-family:var(--font-display); font-weight:800; font-size:clamp(20px,2.2vw,26px); letter-spacing:-.02em; }
 .cs-cta{ display:inline-flex; align-items:center; justify-content:center; gap:8px; margin-top:auto; font-family:var(--font-mono); text-transform:uppercase; font-size:12px; letter-spacing:.05em; color:var(--ink); border:1.5px solid var(--ink); border-radius:var(--radius); padding:12px 16px; transition:background .35s var(--ease), color .35s var(--ease); }
@@ -924,6 +968,16 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 
 /* --- Reels: 3D coverflow carousel (centred card in focus, neighbours angled back) --- */
 .reelcarousel{ position:relative; margin-top:6px; }
+/* Stage wraps the viewport so the side arrows sit on the reels (vertically centred) and are
+   visible the instant the user lands — no scrolling down to find a control bar */
+.reelstage{ position:relative; }
+.reelnav{ position:absolute; top:50%; transform:translateY(-50%); z-index:6; width:clamp(40px,4vw,50px); height:clamp(40px,4vw,50px); border-radius:50%; background:#fff; border:1px solid var(--border); color:var(--ink); display:grid; place-items:center; cursor:pointer; box-shadow:0 12px 30px -14px rgba(11,10,17,.5); transition:background .3s var(--ease), color .3s var(--ease), transform .25s var(--ease); }
+.reelnav svg{ width:56%; height:56%; }
+.reelnav--prev{ left:clamp(2px,1.5vw,18px); }
+.reelnav--next{ right:clamp(2px,1.5vw,18px); }
+.reelnav:hover{ background:var(--ink); color:#fff; }
+.reelnav:active{ transform:translateY(-50%) scale(.9); }
+.reelnav[disabled]{ opacity:.32; pointer-events:none; }
 .reelviewport{ overflow:hidden; perspective:1700px; padding-block:clamp(14px,2vw,26px); }
 .reelrail{
   position:relative;
@@ -933,7 +987,7 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
   transition:transform .55s var(--ease);
 }
 .reelcard{
-  flex:0 0 clamp(238px,70vw,290px);
+  flex:0 0 clamp(180px,50vw,222px);
   display:flex; flex-direction:column; background:#fff; border:1px solid var(--border);
   border-radius:18px; overflow:hidden; transform-style:preserve-3d; backface-visibility:hidden;
   transition:transform .55s var(--ease), opacity .55s var(--ease), box-shadow .4s var(--ease), border-color .4s var(--ease);
@@ -955,7 +1009,7 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 .reelcard__name{ font-family:var(--font-display); font-weight:800; text-transform:uppercase; letter-spacing:-.01em; font-size:clamp(15px,1.7vw,18px); line-height:1.05; }
 .reelcard__tag{ font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); flex:none; }
 @keyframes embed-shimmer{ from{ background-position:220% 0; } to{ background-position:-120% 0; } }
-.reelcard__embed{ position:relative; width:100%; height:clamp(440px,58vh,560px); background:linear-gradient(100deg,#efece4 25%,#e3dfd4 50%,#efece4 75%) #fafafa; background-size:220% 100%; animation:embed-shimmer 1.7s linear infinite; }
+.reelcard__embed{ position:relative; width:100%; height:clamp(268px,34vh,330px); background:linear-gradient(100deg,#efece4 25%,#e3dfd4 50%,#efece4 75%) #fafafa; background-size:220% 100%; animation:embed-shimmer 1.7s linear infinite; }
 .reelcard__embed.is-loaded{ animation:none; background:#fff; }
 .reelcard__embed iframe{ position:relative; width:100%; height:100%; border:0; display:block; }
 /* Reels stay fully interactive everywhere so the video can be tapped/clicked to
@@ -972,10 +1026,11 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 .reelhint__arrow{ display:inline-block; }
 @media (prefers-reduced-motion:no-preference){ .reelhint__arrow{ animation:reelnudge 1.5s var(--ease) infinite; } }
 @keyframes reelnudge{ 0%,100%{ transform:translateX(0); opacity:.55; } 50%{ transform:translateX(6px); opacity:1; } }
-@media (max-width:560px){ .reelcard__embed{ height:clamp(440px,62vh,560px); } }
+@media (max-width:560px){ .reelcard__embed{ height:clamp(300px,46vh,360px); } }
 
 /* === LinkedIn case studies: official LinkedIn embeds (genuine LinkedIn UI) === */
-.li-rail{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(16px,2vw,22px); align-items:stretch; }
+/* Intrinsic grid: flows 3 -> 2 -> 1 columns by available width, no hard breakpoint */
+.li-rail{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr)); gap:clamp(16px,2vw,22px); align-items:stretch; }
 .li-card{
   display:flex; flex-direction:column; height:100%;
   background:#fff; border:1px solid var(--border); border-radius:14px; overflow:hidden;
@@ -999,8 +1054,7 @@ body.loaded .hero__creators{ opacity:1; transform:none; }
 }
 .li-card__cta svg{ width:15px; height:15px; flex:none; }
 .li-card__cta:hover{ background:#0A66C2; color:#fff; }
-@media (max-width:920px){
-  .li-rail{ grid-template-columns:1fr; max-width:520px; }
+@media (max-width:620px){
   .li-card__embed{ height:clamp(440px,62vh,560px); }
 }
 @media (prefers-reduced-motion:reduce){

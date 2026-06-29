@@ -11,8 +11,10 @@
 <link rel="apple-touch-icon" href="echolabs-mark.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://assets.calendly.com" />
+<link rel="dns-prefetch" href="https://calendly.com" />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=20260629-2" />
+<link rel="stylesheet" href="styles.css?v=20260705" />
 </head>
 <body>
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs><linearGradient id="logoGrad" gradientUnits="userSpaceOnUse" x1="1" y1="8" x2="25" y2="24"><stop offset="0" stop-color="#FF4A24"/><stop offset="0.55" stop-color="#7B3DFF"/><stop offset="1" stop-color="#3A2BE8"/></linearGradient></defs></svg>
@@ -49,17 +51,20 @@
 
 <main id="main">
 
-<!-- SELECTED WORK — land directly on the work -->
+<!-- SELECTED WORK: land directly on the work -->
 <section class="section work-top" id="campaigns" aria-labelledby="camp-h">
   <div class="wrap">
     <div class="section__head">
-      <h2 id="camp-h" class="section__title">Campaigns that <span class="accent">echo.</span></h2>
+      <h2 id="camp-h" class="section__title">Campaigns that <span class="accent">echoed.</span></h2>
     </div>
 
     <h3 class="work-subhead">Influencer marketing campaigns</h3>
     <p class="work-note">Real campaigns, embedded from each creator's public post. Use the arrows or swipe to move through them, and tap “View on Instagram” to open any reel.</p>
 
     <div class="reelcarousel" data-reelcarousel>
+      <div class="reelstage">
+      <button class="reelnav reelnav--prev" type="button" data-reel-prev aria-label="Previous reel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="reelnav reelnav--next" type="button" data-reel-next aria-label="Next reel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
       <div class="reelviewport">
         <div class="reelrail" data-reelrail role="list" aria-label="Campaign reels. Use the arrows or swipe to see more">
 
@@ -131,20 +136,26 @@
 
         </div>
       </div>
+      </div>
       <div class="reelctl">
         <button class="reelctl__btn" type="button" data-reel-prev aria-label="Previous reel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
         <span class="reelctl__brand" data-reel-brand aria-live="polite">Rapido</span>
         <button class="reelctl__btn" type="button" data-reel-next aria-label="Next reel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
     </div>
+  </div>
+</section>
 
-    <h3 class="work-subhead">LinkedIn personal branding</h3>
-    <p class="work-note">Founder-written posts that earned real distribution. What a client cares about is the numbers, so here's how each one performed. Open any post on LinkedIn to see it in full.</p>
+<!-- LINKEDIN PERSONAL BRANDING: distinct band -->
+<section class="section work-li" id="linkedin" aria-labelledby="li-h">
+  <div class="wrap">
+    <h3 id="li-h" class="work-subhead reveal">LinkedIn personal branding</h3>
+    <p class="work-note reveal">Founder-written posts that earned real distribution. What a client cares about is the numbers, so here's how each one performed. Open any post on LinkedIn to see it in full.</p>
 
-    <div class="li-rail">
+    <div class="li-rail reveal" data-d="1">
 
       <div class="li-card">
-        <div class="li-card__embed"><iframe data-src="https://www.linkedin.com/embed/feed/update/urn:li:share:7349042464696999936" title="LinkedIn post by Sanidhya Kala — Badshah's pizza brand" frameborder="0" allow="fullscreen" allowfullscreen></iframe></div>
+        <div class="li-card__embed"><iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7349042464696999936" loading="lazy" onload="this.closest('.li-card__embed').classList.add('is-loaded')" title="LinkedIn post by Sanidhya Kala: Badshah's pizza brand" frameborder="0" allow="fullscreen" allowfullscreen></iframe></div>
         <ul class="li-metrics" aria-label="Post performance">
           <li><b>2.6L</b><span>Impressions</span></li>
           <li><b>1.5L</b><span>Members reached</span></li>
@@ -153,7 +164,7 @@
       </div>
 
       <div class="li-card">
-        <div class="li-card__embed"><iframe data-src="https://www.linkedin.com/embed/feed/update/urn:li:share:7342645148637458432" title="LinkedIn post by Sanidhya Kala — McDonald's ₹1 ketchup strategy" frameborder="0" allow="fullscreen" allowfullscreen></iframe></div>
+        <div class="li-card__embed"><iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7342645148637458432" loading="lazy" onload="this.closest('.li-card__embed').classList.add('is-loaded')" title="LinkedIn post by Sanidhya Kala: McDonald's ₹1 ketchup strategy" frameborder="0" allow="fullscreen" allowfullscreen></iframe></div>
         <ul class="li-metrics" aria-label="Post performance">
           <li><b>46K</b><span>Impressions</span></li>
           <li><b>30K</b><span>Members reached</span></li>
@@ -162,7 +173,7 @@
       </div>
 
       <div class="li-card">
-        <div class="li-card__embed"><iframe data-src="https://www.linkedin.com/embed/feed/update/urn:li:share:7331686650785255424" title="LinkedIn post by Sanidhya Kala — digital payments vs cash" frameborder="0" allow="fullscreen" allowfullscreen></iframe></div>
+        <div class="li-card__embed"><iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7331686650785255424" loading="lazy" onload="this.closest('.li-card__embed').classList.add('is-loaded')" title="LinkedIn post by Sanidhya Kala: digital payments vs cash" frameborder="0" allow="fullscreen" allowfullscreen></iframe></div>
         <ul class="li-metrics" aria-label="Post performance">
           <li><b>1.4L</b><span>Impressions</span></li>
           <li><b>83K</b><span>Members reached</span></li>
@@ -171,8 +182,12 @@
       </div>
 
     </div>
+  </div>
+</section>
 
-    <!-- PROOF, NOT PROMISES — shown after the work -->
+<!-- PROOF, NOT PROMISES: shown after the work -->
+<section class="section work-proof">
+  <div class="wrap">
     <div class="proofblock reveal">
       <span class="eyebrow section__eyebrow"><b>The takeaway</b></span>
       <h2 class="proofblock__title">Proof, not <span class="accent">promises.</span></h2>
@@ -217,6 +232,6 @@
 </footer>
 
 <script src="config.js"></script>
-<script src="app.js?v=20260629-2"></script>
+<script src="app.js?v=20260705"></script>
 </body>
 </html>

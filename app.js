@@ -1,5 +1,5 @@
 /* ============================================================
-   ECHOLABS — SHARED APP JS
+   ECHOLABS: SHARED APP JS
    Every feature is guarded so each page only runs what it has.
    ============================================================ */
 (() => {
@@ -51,12 +51,18 @@
         // otherwise the same-tab href fallback opens Calendly directly
       });
     });
+    // Proactively warm the widget (during idle + on first interaction) so a click opens the
+    // popup instantly instead of cold-loading Calendly's script — fixes the slow first open.
+    ['pointerdown', 'touchstart', 'scroll', 'keydown'].forEach(ev =>
+      window.addEventListener(ev, loadCalendly, { once: true, passive: true }));
+    if ('requestIdleCallback' in window) requestIdleCallback(loadCalendly, { timeout: 3500 });
+    else setTimeout(loadCalendly, 2500);
   }
   // Email links -> Gmail web compose (reliable redirect; opens over the site in a new tab).
   // mailto alone silently fails when no desktop mail client is configured.
   if (CFG.EMAIL) {
     $$('[data-email]').forEach(a => {
-      const subj = a.getAttribute('data-email-subject') || 'Project inquiry — EchoLabs';
+      const subj = a.getAttribute('data-email-subject') || 'Project inquiry: EchoLabs';
       const to = encodeURIComponent(CFG.EMAIL);
       const su = encodeURIComponent(subj);
       a.setAttribute('href', `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}`);
@@ -91,7 +97,7 @@
   }
 
   /* ============================================================
-     NAV — scroll state + mobile menu
+     NAV: scroll state + mobile menu
      ============================================================ */
   const nav = $('.nav');
   if (nav) {
@@ -126,7 +132,7 @@
   }
 
   /* ============================================================
-     MARQUEE — duplicate group for seamless loop
+     MARQUEE: duplicate group for seamless loop
      ============================================================ */
   $$('[data-marquee]').forEach(track => {
     const group = track.firstElementChild;
@@ -134,7 +140,7 @@
   });
 
   /* ============================================================
-     CONTENT FLYWHEEL — rotated polygon spiral
+     CONTENT FLYWHEEL: rotated polygon spiral
      ============================================================ */
   const fwSpin = $('.fw-spin');
   if (fwSpin) {
@@ -153,7 +159,7 @@
   $$('.reveal, [data-stats], [data-echoes]').forEach(el => io.observe(el));
 
   /* ============================================================
-     BELIEF — word-by-word reveal
+     BELIEF: word-by-word reveal
      ============================================================ */
   const belief = $('[data-words]');
   if (belief) {
@@ -222,7 +228,7 @@
   }
 
   /* ============================================================
-     PROCESS — fill line on scroll
+     PROCESS: fill line on scroll
      ============================================================ */
   const pGrid = $('[data-process]');
   const pFill = $('[data-process-fill]');
@@ -248,7 +254,7 @@
   }
 
   /* ============================================================
-     HERO EYEBROW — scramble / signal-lock
+     HERO EYEBROW: scramble / signal-lock
      ============================================================ */
   const scrambleEl = $('[data-scramble]');
   if (scrambleEl && !reduceMotion) {
@@ -287,7 +293,7 @@
   }
 
   /* ============================================================
-     ECHO CURSOR (desktop pointer only — never runs on touch/mobile)
+     ECHO CURSOR (desktop pointer only: never runs on touch/mobile)
      ============================================================ */
   if (!reduceMotion && finePointer) {
     const cursor = $('.cursor');
@@ -332,7 +338,7 @@
   }
 
   /* ============================================================
-     EMBEDS (Instagram reels + LinkedIn) — robust lazy load.
+     EMBEDS (Instagram reels + LinkedIn): robust lazy load.
      IntersectionObserver can fail to fire on horizontal rails / some mobile
      browsers, leaving embeds blank. Use viewport geometry checked on real
      page + rail scroll instead, with a buffer so they load just before view.
@@ -372,7 +378,7 @@
   /* ============================================================
      TOUCH: the LinkedIn text embeds are pointer-events:none on touch so the page
      can scroll; a tap opens the post via its CTA link. (Reels stay interactive
-     so they play in place — handled by Instagram's own player.)
+     so they play in place: handled by Instagram's own player.)
      ============================================================ */
   if (window.matchMedia('(hover:none),(pointer:coarse)').matches) {
     $$('.li-card__embed').forEach(box => {
@@ -385,7 +391,7 @@
   }
 
   /* ============================================================
-     WORK PAGE — optional video case studies
+     WORK PAGE: optional video case studies
      (hidden entirely unless VIDEOS are configured)
      ============================================================ */
   const videoMount = $('[data-videos]');
@@ -406,7 +412,7 @@
   }
 
   /* ============================================================
-     WORK PAGE — "Our Work" deck mockup carousel
+     WORK PAGE: "Our Work" deck mockup carousel
      ============================================================ */
   $$('[data-deck-carousel]').forEach(deck => {
     const track   = $('[data-deck-track]', deck);
@@ -458,7 +464,7 @@
       if (Math.abs(sdx) > 40) { go(i + (sdx < 0 ? 1 : -1)); suppressClick = true; setTimeout(() => { suppressClick = false; }, 400); }
       swiping = false;
     });
-    // Clicking/tapping the slide itself advances — but never swallow real links/buttons (e.g. the CTA)
+    // Clicking/tapping the slide itself advances: but never swallow real links/buttons (e.g. the CTA)
     vp.addEventListener('click', (e) => {
       if (suppressClick) return;
       if (e.target.closest('a, button')) return;
@@ -468,7 +474,7 @@
   });
 
   /* ============================================================
-     WORK PAGE — Reels coverflow carousel
+     WORK PAGE: Reels coverflow carousel
      Centred reel is in focus & interactive; neighbours angle back in 3D.
      Move with the bottom controls, arrow keys, swipe, or by tapping a side card.
      ============================================================ */
@@ -552,7 +558,7 @@
   });
 
   /* ============================================================
-     FORMS — validate + submit to Google Apps Script
+     FORMS: validate + submit to Google Apps Script
      ============================================================ */
   $$('[data-lead-form]').forEach(form => {
     const status = $('.form__status', form);
@@ -623,8 +629,8 @@
         if (status) {
           status.dataset.state = 'success';
           status.textContent = (data.type && /creator/i.test(data.type))
-            ? 'You’re in the queue. We review every creator application — expect to hear back soon.'
-            : 'Thanks — your inquiry landed. We’ll be in touch within one business day.';
+            ? 'You’re in the queue. We review every creator application: expect to hear back soon.'
+            : 'Thanks: your inquiry landed. We’ll be in touch within one business day.';
         }
       } catch (err) {
         // Fallback to email so a lead is never lost
@@ -632,7 +638,7 @@
           status.dataset.state = 'error';
           status.textContent = 'Couldn’t submit automatically. Opening email as a backup…';
         }
-        const subj = encodeURIComponent(`${data.type || 'New'} inquiry — ${data.name || ''}`);
+        const subj = encodeURIComponent(`${data.type || 'New'} inquiry: ${data.name || ''}`);
         const body = encodeURIComponent(
           Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n')
         );
